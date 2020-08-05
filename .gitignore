@@ -1,0 +1,42 @@
+# Compiled Object files, Static and Dynamic libs (Shared Objects)
+*.o
+*.a
+*.so
+*.swo
+*.swp
+main
+
+# Folders
+_obj
+_test
+.vscode
+.idea/
+.project
+
+
+#emacs
+*#
+#*
+*~
+.#*
+*.exe
+
+# Macos
+.DS_Store
+*/.DS_Store
+._.DS_Store
+
+# Compiled go tests
+*.test 
+
+#Integration Testing
+
+#vendor builds
+
+# Build artifacts
+*.iml
+build/
+package/
+
+
+nohup.out
