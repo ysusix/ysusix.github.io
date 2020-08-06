@@ -1,4 +1,4 @@
-#mutex 
+# mutex 
 
 ### Mutex 演进史
 
@@ -231,6 +231,6 @@ func (m *Mutex) Unlock() {
 
 ### 参考资料
 
-[图解 mutex](https://www.jianshu.com/p/617b77ff7fa6)
-[go语言设计与实现](https://draveness.me/golang/docs/part3-runtime/ch06-concurrency/golang-sync-primitives/#mutex)
+- [图解 mutex](https://www.jianshu.com/p/617b77ff7fa6)
+- [go语言设计与实现](https://draveness.me/golang/docs/part3-runtime/ch06-concurrency/golang-sync-primitives/#mutex)
 
