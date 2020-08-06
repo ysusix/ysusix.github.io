@@ -5,11 +5,11 @@
 - context
 - slice 数组切片区别
 - map / sync.map 
-- [mutex](sync/mutex.md)/rwMutex实现 / segment 分段锁
+- [mutex](/golang/sync/mutex.md)/rwMutex实现 / segment 分段锁
 - error、panic &&  recover
 - channel &&  select
 -  defer
-- [waitgroup](sync/waitgroup.md)
+- [waitgroup](/golang/sync/waitgroup.md)
 - reflect 反射
 - interface
 
