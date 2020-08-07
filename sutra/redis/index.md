@@ -30,7 +30,10 @@ Redis：Remote dictionary service.
         - 底层：ziplist 压缩列表 / skiptable 跳表
         - 操作：zscan
     - 扩展： hyperlog/bitmap/bloomfilter/geohash
-    - 操作： connect/pconnect / pipeline
+- 使用： 
+    - connect/pconnect
+    - pipeline
+    - lua
 - 高性能
     - 网络模型/请求响应流程/IO模型
     - 线程模型
@@ -43,6 +46,8 @@ Redis：Remote dictionary service.
 - 高可扩展
     - 数据分片
     - 负载均衡
+
+
 
 ![底层数据结构](https://static001.geekbang.org/resource/image/82/01/8219f7yy651e566d47cc9f661b399f01.jpg)
 
@@ -81,9 +86,11 @@ Redis：Remote dictionary service.
 ### 相关工具
 - telnet/netstat
 - tcpflow/tcpdump
+- 监控等
 
 ### 学习资料
-- 源码
+- 源码 https://github.com/antirez/redis 
+- 中文注释源码 git@github.com:huangz1990/redis-3.0-annotated.git 
 - 书 Redis设计与实现 https://drive.google.com/drive/folders/1AwI658M0ysaUcu7X_Ms_LfkzFG8nJenX?usp=sharing
 - 书 Redis开发与运维
 - 书 Redis深度历险：核心原理与应用实践
