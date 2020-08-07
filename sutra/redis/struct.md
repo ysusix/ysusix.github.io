@@ -13,6 +13,7 @@
         int free; // buf 中剩余可用空间的长度
         char buf[]; // 数据空间
     };
+    
     // 动态扩容规则
     if (newlen < SDS_MAX_PREALLOC)
         // 如果新长度小于 SDS_MAX_PREALLOC 
@@ -40,6 +41,7 @@
         unsigned long len; // 链表所包含的节点数量
         ...
     } list;
+
     // 节点
     typedef struct listNode {
         struct listNode *prev; // 前置节点
@@ -65,6 +67,7 @@
         int rehashidx; // rehash 索引。当 rehash 不在进行时，值为 -1
         ...
     } dict;
+
     // 哈希表
     typedef struct dictht {
         dictEntry **table; // 哈希表数组
@@ -72,6 +75,7 @@
         unsigned long sizemask; // 哈希表大小掩码，用于计算索引值。总是等于 size - 1
         unsigned long used; // 该哈希表已有节点的数量
     } dictht;
+
     // 哈希表节点
     typedef struct dictEntry {
         void *key; // 键
@@ -82,13 +86,34 @@
         } v;
         struct dictEntry *next; // 指向下个哈希表节点，形成链表
     } dictEntry;
+
     // 哈希算法 MurmurHash2
+    h = dictHashKey(d, key);
+    idx = h & d->ht[table].sizemask;
 
     // 冲突解决 拉链法
-    
+    entry->next = ht->table[index];
+    ht->table[index] = entry;
+
     // 扩展收缩
+    if (d->ht[0].used >= d->ht[0].size &&
+        (dict_can_resize ||
+         d->ht[0].used/d->ht[0].size > dict_force_resize_ratio))
+    {
+        return dictExpand(d, d->ht[0].used*2);
+    }
+    ...
+    minimal = d->ht[0].used;
+    if (minimal < DICT_HT_INITIAL_SIZE)
+        minimal = DICT_HT_INITIAL_SIZE;
+    return dictExpand(d, minimal);
 
     // 渐进式rehash
+    if (dictIsRehashing(d)) _dictRehashStep(d);
+
+    // rehash 过程中从操作
+    ht = dictIsRehashing(d) ? &d->ht[1] : &d->ht[0]; // 新增
+    for (table = 0; table <= 1; table++) { // 查找(可能重复)/删除
     ```
 - 操作：
     - 基本操作： hset / hsetnx / hget / hexists / hdel / hlen
