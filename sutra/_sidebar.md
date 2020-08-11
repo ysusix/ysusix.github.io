@@ -1,4 +1,5 @@
 - [Golang](golang/index.md)
+   - [分享日志](golang/sharelog.md)
 - [Redis](redis/index.md)
   - [分享日志](redis/sharelog.md)
   - [内部结构](redis/struct.md)
