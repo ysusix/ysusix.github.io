@@ -71,7 +71,7 @@ hashWriting  = 4 // 当前有线程写 map,a goroutine is writing to the map
 sameSizeGrow = 8 // map正在等量扩容，the current map growth is to a new map of the same size
 ```
 
-![hmap-and-buckets](/Users/baijichuan/Documents/学习笔记/2019-12-30-15777168478811-hmap-and-buckets.png)
+![hmap-and-buckets](https://img.draveness.me/2019-12-30-15777168478811-hmap-and-buckets.png)
 
 
 

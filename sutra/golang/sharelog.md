@@ -3,7 +3,7 @@
 - [mutex](/golang/sync/mutex.md)
 - [waitgroup](/golang/sync/waitgroup.md)
    
-###TODO
+### TODO
 - 整理，有哪些常见锁？分布式锁，数据库有哪些锁。。。
 
 ## 第二次 20200811 周一 map
