@@ -39,6 +39,8 @@ typedef struct redisObject {
 #define REDIS_ZSET_MAX_ZIPLIST_ENTRIES 128
 #define REDIS_ZSET_MAX_ZIPLIST_VALUE 64
 
+#define REDIS_ENCODING_EMBSTR_SIZE_LIMIT 39
+
 ```
 
 ## string 字符串
