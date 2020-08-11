@@ -4,7 +4,7 @@
 
 - context
 - slice 数组切片区别
-- map / sync.map 
+- [map](/golang/runtime/map.md)/ sync.map 
 - [mutex](/golang/sync/mutex.md)/rwMutex实现 / segment 分段锁
 - error、panic &&  recover
 - channel &&  select
