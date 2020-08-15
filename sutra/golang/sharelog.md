@@ -12,10 +12,9 @@
 ## 第三次 20200812 周三  map
 [map](/golang/runtime/map.md)
 
+## 第四次 20200815 周六 sync.map
+### TODO
+- sync.map优化空间，参考 mysql 区间锁 
 
-## 第四次 20200814 周五 sync.map
-
-
-
-## 第五次 20200816 周六 channel
+## 第五次 20200816 周日 channel
 

@@ -4,11 +4,12 @@
 
 - context
 - slice 数组切片区别
-- [map](/golang/runtime/map.md)
+- runtime 
+    - [map](/golang/runtime/map.md)
 - sync包
-    - map
     - [waitgroup](/golang/sync/waitgroup.md)
     - [mutex](/golang/sync/mutex.md)
+    - [map](/golang/sync/map.md)
     - rwMutex 
     - pool
     - once
@@ -16,7 +17,6 @@
 - error、panic &&  recover
 - channel &&  select
 - defer
-- [waitgroup](/golang/sync/waitgroup.md)
 - reflect 反射
 - interface
 
