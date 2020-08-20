@@ -11,7 +11,7 @@
     - [mutex](/golang/sync/mutex.md)
     - [map](/golang/sync/map.md)
     - rwMutex 
-    - pool
+    - [pool](/golang/sync/pool.md)
     - once
     - cond
 - error、panic &&  recover
