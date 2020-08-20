@@ -1,0 +1,37 @@
+## RDB Redis DataBase
+- 可通过 SAVE 和 BGSAVE 阻塞和非阻塞两种方式生成
+- SAVE / BGSAVE / BGREWRITEAOF 不会同时执行
+- RDB 存在则会默认载入，载入过程会阻塞进程
+- 配置 BGSAVE 触发条件，可多条，如 save 300 10 （300秒内，至少10次修改）
+- dirty 上次持久化后的修改次数，lastsave 上次持久化的时间戳
+- ServerCron 中检查持久化条件是否满足
+- RDB 文件结构
+    - "REDIS" db_verion databases EOF check_sum
+    - databases: database0 database1 ...
+    - database: SELECTDB db_numser key_value_pairs
+    - key_value_pairs: EXPIRETIME_MS ms TYPE key value
+    - value:
+        - STRING:
+            - REDIS_RDB_ENC_INT8/16/32 integer
+            - REDIS_RDB_ENC_LZF compressed_len len string / len string
+        - LIST: len item1 item2 ...
+        - SET: size elem1 elem2 ...
+        - HASH: size key1 val1 key2 val2 ...
+        - ZSET: size member1 score1 member2 score2 ...
+        - SET_INISET: string
+        - LIST_ZIPLIST: string
+        - ZSET_ZIPLIST: string
+        - HASH_ZIPLIST: string
+- od -cx dump.rdb / redis-check-dump 查看 rdb 文件
+
+## AOF Append Only File
+- 通过保存 Redis 服务器执行的写命令来记录数据库状态
+- AOF 文件使用 RESP 编码
+- 命令执行后，追加至 redisServer 的 aof_buf 缓冲区中
+- ServerCron 中 flushAppendOnlyFile 函数负责 AOF 文件写入和同步
+- 持久化（文件同步）策略： always / everysec（默认） / no
+- BGREWRITEAOF
+    - 根据数据库生成新的 AOF 文件，并不会分析处理原 AOF 文件
+    - 可避免 AOF 文件无限变大
+    - 使用单独线程运行
+    - 使用 AOF 重写缓冲期保存重写过程中的写命令

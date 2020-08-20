@@ -6,8 +6,8 @@ Redis：Remote dictionary service.
 - 应用纬度： 缓存/锁/队列等
 - 系统纬度： CPU/内存/网络/存储，设计原理/规范，epoll网络模型/run-to-complete模型等
 - 高性能主线：包括线程模型、数据结构、持久化、网络框架
-- 高可靠主线：包括主从复制、哨兵机制
-- 高可扩展主线： 包括数据分片、负载均衡
+- 高可靠主线：主从复制、哨兵机制
+- 高可扩展主线： 集群、数据分片、负载均衡
 
 ![redis01](https://static001.geekbang.org/resource/image/79/e7/79da7093ed998a99d9abe91e610b74e7.jpg)
 
@@ -31,21 +31,22 @@ Redis：Remote dictionary service.
         - 操作：zscan
     - 扩展： hyperlog/bitmap/bloomfilter/geohash
 - 使用： 
-    - connect/pconnect
-    - pipeline
-    - lua
+    - connect/pconnect/pipeline
+    - 发布订阅/lua脚本/事务/排序/二进制位数组/慢查询/监视器
 - 高性能
-    - 网络模型/请求响应流程/IO模型
-    - 线程模型
-    - 内存模型/内存分配器/索引/ hash冲突/rehash过程
-    - 存储模型/RDB/AOF日志/持久化
-- 高可靠/集群
+    - 网络模型：请求响应流程/多路复用
+    - 线程模型：文件事件/时间事件
+    - 内存模型：内存分配器/索引/ hash冲突/rehash过程 / lru
+    - 存储模型：RDB/AOF日志
+- 高可靠
     - 主从一致性
     - 哨兵机制
     - CAP / 共识算法
 - 高可扩展
+    - 集群
     - 数据分片
     - 负载均衡
+    
 
 
 

@@ -6,3 +6,6 @@
   - [对象类型](redis/object.md)
   - [单机数据库](redis/db.md)
   - [线程模型](redis/process.md)
+  - [存储模型](redis/storage.md)
+  - [网络模型](redis/network.md)
+  - [内存模型](redis/memory.md)
