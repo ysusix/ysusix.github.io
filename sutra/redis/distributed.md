@@ -1,0 +1,85 @@
+## 复制 Replication
+- 旧版本复制
+    - 从向主发送 sync
+    - 主执行 BGSAVE，生成 RDB，同时使用缓冲区记录新的写命令
+    - 主向从传输 RDB 文件，从恢复，主向从同步缓冲区写命令
+    - 主从写命令同步
+    - 断线重连后需重复执行上面步骤，效率很低
+- 新版本复制（2.8以后）
+    - 使用 psync， 断线重连后仅需同步断线期间的写命令
+    - 增加：主从复制偏移量，主服务器复制积压缓冲期，服务器运行 ID
+    - 断线重连后，比较从复制偏移量与复制积压缓冲区最小偏移量，再选择增量或全量同步
+    - 断线重连后，从服务器发送的主服务器ID若与主服务器真实ID不一致，也会触发全量同步
+    - 首次 PSYNC ? -1，响应 +FULLRESYNC <runid> <offset>
+    - 重连 PSYNC <runid> <offset>，响应 +CONTINUE
+- 复制过程
+    - 从发起 SLAVEOF 127.0.0.1 6379，主响应 +OK
+    - 从向主发起客户端连接，发送 PING 确认网络状况，主是否繁忙等
+    - 从发送 AUTH xxx 进行身份验证 
+    - 从发送 REPLCONF listening-port <port-number>，？除展示无其他用途
+    - 从发送 PSYNC ? -1，主连接从，同步缓冲区写命令
+    - 命令传播
+- 心跳检测
+    - 从每秒一次向主发送 REPLCONF ACK <replication_offset>
+    - 检测网络状态
+    - 辅助实现 min-slaves 配置，从个数少于最小配置个数，延迟大于最大配置延迟，则停止同步
+    - 检测命令丢失，通过偏移量发现不一致，触发增量同步
+    - ？如何确定不一致是否是网络丢包还是未到达产生的，是否会有重复同步的情况
+
+## 哨兵 Sentinel
+- 启动
+    - 初始化 redis-server conf-file --sentinel / redis-sentinel conf-file
+    - 特殊模式下的 redis 服务器，端口和命令表等均不一样
+    - sentinelState / sentinelRedisInstance
+    - 向主服务器发起 订阅连接/命令连接，每10秒一次发送 INFO 命令更新状态
+    - 向从服务器发起 订阅连接/命令连接，每10秒一次发送 INFO 命令更新状态
+    - PUBLISH / SUBSCRIBE __sentinel__:hello
+    - 向其他 Sentinel 发起 命令连接
+- 故障转移
+    - 每秒一次向所有连接实例发送 PING 命令，根据配置判断是否满足 主观下线 条件
+    - 询问其他 Sentinel 是否下线，根据配置判断是否满足 客观下线 条件
+    - SENTINEL is-master-down-by-addr <ip> <addr> <current_epoch> <runid>
+    - Raft 算法选举领头 Sentinel，进行故障转移
+    - 转移过程：挑选新的主服务器/更新其他从服务器的主/下线服务器设置为从服务器
+    - 选主过程：删除下线从/删除5秒内未回复的从/删除与下线主断开过长的从（配置）
+    - 选主过程：最高优先级/最大复制偏移量/最小ID
+
+## 集群 Cluster
+- 节点
+    - CLUSTER NODES / MEET / INFO
+    - cluster-enabled: yes 配置启动集群，ClusterCron 处理集群事务
+    - clusterState / clusterNode / clusterLink
+    - A->B: CLUSTER MEET <ip> <port>; B->A: PONG; A->B PING; Gossip 协议传播B
+- 槽（slot）
+    - 共 16384 个槽，都分配完才启动集群
+    - 槽指派：CLUSTER ADDSLOTS <slot> [slot ...]
+    - 节点拥有槽位信息，clusterNode.slots[16384/8] 数组存储
+    - 槽位所在节点信息，clusterState.slots[16384] 数组存储
+- 命令执行
+    - 计算 key 所在槽位：CRC16(key) & 16384
+    - 判断槽位是否属于本节点 clusterState.slots[i] == clusterState.myself
+    - MOVED <slot> <ip>:<port>
+    - 集群节点只使用 0 号数据库
+    - clusterState.slots_to_keys（跳表）存储槽位和键关系，用于重新分片
+    - CLUSTER GETKEYSINSLOT <slot> <count>
+- 重新分片
+    - redis-trib 软件执行
+    - CLUSTER SETSLOT <slot> IMPORTING <source_id> 目标节点准备
+    - CLUSTER SETSLOT <slot> MIGRATING <target_id> 原节点准备
+    - CLUSTER GETKEYSINSLOT <slot> <count> 获取key
+    - MIGRATE <target_ip> <target_port> <key_name> 0 <timeout> 转移key
+    - CLUSTER SETSLOT <slot> NODE <target_ip> 散播消息
+    - ASK <slot> <ip>:<port> / ASKING 到目标节点，否则会响应 MOVED 错误
+- 故障转移
+    - CLUSTER REPLICATE <node_id>
+    - 互发 PING 消息判断其他节点状态，PFAIL 疑似下线，半数以上则 FAIL 正式下线
+    - 选举主节点 / SLAVEOF no one / 接管下线节点槽位 / 发送 PONG 消息
+- Raft 算法的领头选举（leader election）方法
+    - 集群配置纪元默认位 0，每次选举 +1
+    - 同一纪元下，每个主节点有一次投票机会，第一个向主节点要求投票的从节点获得票
+    - 从节点发现主节点下线后，发送 CLUSTERMSG_TYPE_FAILOVER_AUTH_REQUEST 消息索票
+    - 主节点发送 CLUSTERMSG_TYPE_FAILOVER_AUTH_ACK 投票
+    - 从节点获取大于 N/2+1 张票时，当选主节点，N为有票主节点个数
+- 消息
+    - MEET / PING / PONG / FAIL / PUBLISH ...
+    - clusterMsg
