@@ -9,3 +9,4 @@
   - [存储模型](redis/storage.md)
   - [网络模型](redis/network.md)
   - [内存模型](redis/memory.md)
+  - [分布式](redis/distributed.md)

@@ -1,10 +1,9 @@
 ## 网络模型
 多路复用
 ```
-// ae.h / ae.c / ae_epooll.c / ae_evport.c / ae_kqueue.c / ae_select.c
+// ae.h / ae.c / ae_epoll.c / ae_evport.c / ae_kqueue.c / ae_select.c
 
 ```
-https://www.jianshu.com/p/ee381d365a29
 
 ## RESP Redis Serialization Protocol
 - 单行字符串以 + 符号开头，如 +hello world\r\n
