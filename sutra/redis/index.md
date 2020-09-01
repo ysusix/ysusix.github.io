@@ -29,7 +29,7 @@ Redis：Remote dictionary service.
     - sorted set / zset 有序集合
         - 底层：ziplist 压缩列表 / skiptable 跳表
         - 操作：zscan
-    - 扩展： hyperlog/bitmap/bloomfilter/geohash
+    - 扩展： hyperlog/bitmap/bloomfilter/geohash/stream
 - 使用： 
     - connect/pconnect/pipeline
     - 发布订阅/lua脚本/事务/排序/二进制位数组/慢查询/监视器
@@ -46,9 +46,6 @@ Redis：Remote dictionary service.
     - 集群
     - 数据分片
     - 负载均衡
-    
-
-
 
 ![底层数据结构](https://static001.geekbang.org/resource/image/82/01/8219f7yy651e566d47cc9f661b399f01.jpg)
 
@@ -76,13 +73,12 @@ Redis：Remote dictionary service.
 - CPU
     - 不同操作时间复杂度
     - 跨CPU核心访问
+- 面试问题
+    - Redis如何做持久化
+    - 集群方案怎么做
+    - 为何使用 ziplist？ CPU缓存友好/内存紧凑
 
 ![Redis问题画像图](https://static001.geekbang.org/resource/image/70/b4/70a5bc1ddc9e3579a2fcb8a5d44118b4.jpeg)
-
-### 面试问题
-- Redis如何做持久化
-- 集群方案怎么做
-- 为何使用 ziplist？ CPU缓存友好/内存紧凑
 
 ### 相关工具
 - telnet/netstat
@@ -95,5 +91,7 @@ Redis：Remote dictionary service.
 - 书 Redis设计与实现 https://drive.google.com/drive/folders/1AwI658M0ysaUcu7X_Ms_LfkzFG8nJenX?usp=sharing
 - 书 Redis开发与运维
 - 书 Redis深度历险：核心原理与应用实践
+- 书 Redis使用手册 微信读书
 - 专栏 Redis核心技术与实战 https://time.geekbang.org/column/intro/329
-
+- 官方文档 https://redis.io/commands/
+- 

@@ -10,3 +10,5 @@
   - [网络模型](redis/network.md)
   - [内存模型](redis/memory.md)
   - [分布式](redis/distributed.md)
+  - [应用](redis/practice.md)
+  - [Aliyun](redis/aliyun.md)
