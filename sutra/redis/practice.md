@@ -2,10 +2,14 @@
 - 缓存
 - 分布式锁
 - 简答限流/秒杀/漏斗限流 cell 4.0
+- 
 - 消息队列(list)/延时队列(zset)
 - bitmap/geo(zset|3.2)/hyperloglog
 - 布隆过滤(bitmap|4.0)
-- 时间序列数据库
+- 时间序列数据库 zset
+- 
+- https://redis.io/modules
+- RediSearch RedisJSON RedisGears RedisAI RedisGraph RedisTimeSeries RedisBloom （https://redislabs.com/modules/redis-search/）
 
 ## 缓存
 - 收益：加速读写 / 降低后端负载（减少访问量和复杂计算）
@@ -24,17 +28,18 @@
     - 解决：高可用 / 后端限流并降级
 - 无底洞：集群中，一次批量查询会请求多个节点，节点越多，请求越多
     - 解决：get / mget 串行 / mget 并行 / hash_tag
-- 污染：
+- 污染：删/更新
 - 数据不一致
     - 先更新数据库，后更新缓存时，缓存有延迟，或有可能未得到更新
     - 先删缓存，再更新数据库，缓存有可能被旧数据回源
+    - 解决？
 - 热点key
-    - 可从 客户端/代理端/服务端/抓包 统计分析
+    - 可从 客户端/代理端/服务端/抓包 统计分析 / --hotkey
     - 解决：拆分复杂数据结构 / 迁移热点key到单独节点 / 本地缓存+更新通知机制
 - bigkey
     - 字符串类型超过10k，非字符串类型个数过多
     - 危害：集群中内存使用不均 / 查询/删除超时堵塞 / 网络堵塞 / 写时复制占用内存/ 切片迁移耗时 / rehash 占内存
-    - scan+debug object/type+len/hlen/llen/scard/zcard 计算
+    - scan+debug object/type+len/hlen/llen/scard/zcard 计算 / --bigkey ？多大才算
     - 删除：string直接删除 / 其他类型分批删除 / 4.0 lazy delete free
 - string类型存储小数据时浪费内存，可改为hash存储
 - 工作

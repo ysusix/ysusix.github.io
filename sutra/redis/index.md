@@ -30,7 +30,7 @@ Redis：Remote dictionary service.
         - 底层：ziplist 压缩列表 / skiptable 跳表
         - 操作：zscan
     - 扩展： hyperlog/bitmap/bloomfilter/geohash/stream
-- 使用： 
+- 使用：
     - connect/pconnect/pipeline
     - 发布订阅/lua脚本/事务/排序/二进制位数组/慢查询/监视器
 - 高性能
