@@ -2,7 +2,7 @@
 
 ### 1、源码包
 
-- context
+- [context](/golang/src/context/context.md)
 - slice 数组切片区别
 - runtime 
     - [map](/golang/runtime/map.md)
@@ -15,7 +15,7 @@
     - once
     - cond
 - error、panic &&  recover
-- channel &&  select
+- [channel]() &&  select
 - defer
 - reflect 反射
 - interface
@@ -25,10 +25,10 @@
 - Go逃逸分析
 - gomode tag如何生成
 - Go GPM模型
--  go调度
+- go调度
 - 协程 与python/java 区别
 - 线程/协程/并发模型/goroutine
-- 内存分配/内存回收/垃圾回收
+- [内存分配](/golang/runtime/mheap.md)/内存回收/[垃圾回收](/golang/runtime/gc.md)
 - 性能调优
 - 内存泄露
 - for range 里 go routine 的闭包捕获问题
